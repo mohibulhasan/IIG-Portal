@@ -1,0 +1,276 @@
+{% load static %}
+
+<!-- Navbar top-->
+<nav
+  class="main-header navbar navbar-expand navbar-white navbar-light navbar-inverse navbar-fixed-left"
+>
+  <!-- Left navbar links -->
+  <ul class="navbar-nav">
+    <li class="nav-item">
+      <a class="nav-link" data-widget="pushmenu" href="#" role="button">
+        <i class="fas fa-bars"></i>
+      </a>
+    </li>
+    <li class="nav-item d-none d-sm-inline-block">
+      <a href="{% url 'home' %}" class="nav-link">Home</a>
+    </li>
+    <li class="nav-item d-none d-sm-inline-block">
+      <a href="{% url 'routestat' %}" class="nav-link">Troubleshoot Route</a>
+    </li>
+    <li class="nav-item d-none d-sm-inline-block">
+      <a href="#" class="nav-link">Contact</a>
+    </li>
+  </ul>
+  <ul class="navbar-nav ml-auto">
+    <li>
+      <!-- SEARCH FORM -->
+      <form class="form-inline ml-3">
+        <div class="input-group input-group-sm">
+          <input
+            class="form-control form-control-navbar"
+            type="search"
+            placeholder="Search"
+            aria-label="Search"
+          />
+          <div class="input-group-append">
+            <button class="btn btn-navbar" type="submit">
+              <i class="fas fa-search"></i>
+            </button>
+          </div>
+        </div>
+      </form>
+    </li>
+    <li class="nav-item d-none d-sm-inline-block">
+      <span><a href="{% url 'logout' %}" class="nav-link"><i class="nav-icon fas fa-power-off" style="margin-right: 10px;"></i>Logout</a></span>
+    </li>
+    <li class="nav-item">
+      <a
+        class="nav-link"
+        data-widget="control-sidebar"
+        data-slide="true"
+        href="#"
+        role="button"
+      >
+        <i class="fas fa-th-large"></i>
+      </a>
+    </li>
+  </ul>
+</nav>
+<!-- /.navbar -->
+
+<!-- Main Sidebar Container -->
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+  <!-- Brand Logo -->
+  <a href="#" class="brand-link">
+    <!-- <img src="{% static 'images/logo.png' %}" alt="Admin Logo" class="brand-image img-circle elevation-3"
+            style="opacity: .8"> -->
+    <img
+      src="{% static 'favicon.ico' %}"
+      alt="BSCCL Logo"
+      class="brand-image img-circle elevation-3"
+      style="opacity: 0.9"
+    />
+    <span class="brand-text font-weight-light">BSCCL IIG Portal</span>
+  </a>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <!-- Sidebar user panel (optional) -->
+    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+      <div class="image">
+        <img
+          src="{% static 'img/user1-128x128.jpg' %}"
+          class="img-circle elevation-2"
+          alt="User Image"
+        />
+      </div>
+      <div class="info">
+        <a href="#" class="d-block"> {{request.user}} Profile</a>
+      </div>
+    </div>
+
+    <!-- Sidebar Menu -->
+    <nav class="mt-2">
+      <ul
+        class="nav nav-pills nav-sidebar flex-column"
+        data-widget="treeview"
+        role="menu"
+        data-accordion="false"
+      >
+        <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
+        <li class="nav-item menu-open">
+          <a href="{% url 'home' %}" class="nav-link active">
+            <i class="nav-icon fas fa-tachometer-alt"></i>
+            <p>
+              Dashboard
+              <!-- <i class="right fas fa-angle-left"></i> -->
+            </p>
+          </a>
+        </li>
+
+        <li class="nav-item has-treeview">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fa fa-cogs"></i>
+            <p>
+              Edit Details
+              <i class="fas fa-angle-left right"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa fa-user"></i>
+                <p>
+                  User Details
+                  <i class="fas fa-angle-left right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{% url 'userinfo' %}" class="nav-link">
+                    <i class="far fa-edit nav-icon"></i>
+                    <p>Add User Info</p>
+                    <!-- <span class="right badge badge-danger">Add</span> -->
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{% url 'customerinfo' %}" class="nav-link">
+                    <i class="far fa-edit nav-icon"></i>
+                    <p>Add Customer Info</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{% url 'customerproperties' %}" class="nav-link">
+                    <i class="far fa-edit nav-icon"></i>
+                    <p>Add Customer properties</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item has-treeview">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-th"></i>
+                <p>
+                  Devices
+                  <i class="fas fa-angle-left right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                {% for device in devices %}
+                <!-- <li class="nav-item">
+                  <a href="#" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>{{device}}</p>
+                  </a>
+                </li> -->
+                {% endfor %}
+                <li class="nav-item">
+                  <a href="{% url 'deviceinfo' %}" class="nav-link">
+                    <i class="far fa-edit nav-icon"></i>
+                    <p>Add New Device</p>
+                    <!-- <span class="right badge badge-danger">Add</span> -->
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item has-treeview">
+              <a href="{% url 'interfaceinfo' %}" class="nav-link">
+                <i class="nav-icon fas fa-edit"></i>
+                <p>
+                  Add Interface
+                  <i class="fas fa-angle-left right"></i>
+                  <!-- <span class="badge badge-info right">6</span> -->
+                </p>
+              </a>
+            </li>
+            <li class="nav-item has-treeview">
+              <a href="{% url 'locationinfo' %}" class="nav-link">
+                <i class="nav-icon fas fa-edit"></i>
+                <p>
+                  Add Location info
+                  <i class="fas fa-angle-left right"></i>
+                  <!-- <span class="badge badge-info right">6</span> -->
+                </p>
+              </a>
+            </li>
+          </ul>
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+                Network Troubleshoot
+                <i class="fas fa-angle-left right"></i>
+                <!-- <span class="badge badge-info right">6</span> -->
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              {% for device in devices %}
+              <li class="nav-item">
+                <a href="/{{device}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>{{device}}</p>
+                </a>
+              </li>
+              {% endfor %}
+            </ul>
+          </li>
+          <li class="nav-item has-treeview">
+            <a href="http://monitor.bsccl.com:3000" class="nav-link" target="_blank">
+              <i class="nav-icon fas fa-copy"></i>
+              <p>
+                Graph Management
+                <i class="fas fa-angle-left right"></i>
+                <!-- <span class="badge badge-info right">6</span> -->
+              </p>
+            </a>
+          </li>
+          <li class="nav-item has-treeview">
+            <a href="http://rt.bsccl.com/login.php" class="nav-link" target="_blank">
+              <i class="nav-icon fas fa-copy"></i>
+              <p>
+                BSCCL TT System
+                <i class="fas fa-angle-left right"></i>
+                <!-- <span class="badge badge-info right">6</span> -->
+              </p>
+            </a>
+          </li>
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fa fa-cogs"></i>
+              <p>
+                Alert System
+                <i class="fas fa-angle-left right"></i>
+                <!-- <span class="badge badge-info right">6</span> -->
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item has-treeview">
+                <a href="{% url 'emailinfo' %}" class="nav-link">
+                  <i class="nav-icon far fa-envelope"></i>
+                  <p>
+                    Email DB
+                    <!-- <i class="fas fa-angle-left right"></i> -->
+                    <!-- <span class="badge badge-info right">6</span> -->
+                  </p>
+                </a>
+              </li>
+              <li class="nav-item has-treeview">
+                <a href="{% url 'phoneinfo' %}" class="nav-link">
+                  <i class="nav-icon fas fa-copy"></i>
+                  <p>
+                    SMS DB 
+                    <i class="#"></i>
+                    <!-- <span class="badge badge-info right">6</span> -->
+                  </p>
+                </a>
+              </li>
+            </ul>
+          </li>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- /.sidebar-menu -->
+  </div>
+  <!-- /.sidebar -->
+</aside>

@@ -1,0 +1,224 @@
+{% extends 'Cportal/main.html' %} 
+{% load static %} 
+{% block content %}
+
+<section class="content">
+  <hr />
+
+  <!-- Main row -->
+  <div class="row">
+    <section class="container-fluid connectedSortable">
+      <div class="container-fluid">
+        <!-- Small boxes (Stat box) -->
+        <br />
+
+        <div class="row">
+          <div class="col-md">
+            <div
+              class="card card-body"
+              style="background-color: rgba(187, 203, 247, 0.685)"
+            >
+              <h5>Customer: {{c.name}}</h5>
+              <hr />
+              <a class="btn btn-outline-info btn-sm btn-block" href=""
+                >Customer Profile</a
+              >
+              <a class="btn btn-outline-danger btn-sm btn-block" href=""
+                >{{c.name.customer_organization}}</a
+              >
+            </div>
+          </div>
+
+          <div class="col-md">
+            <div
+              class="card card-body"
+              style="background-color: rgba(185, 255, 240, 0.685)"
+            >
+              <h5>Customer Information</h5>
+              <hr />
+              <p>Email: {{c.name.customer_email}}</p>
+              <p>Customer Type: {{c.name.customer_type}}</p>
+            </div>
+          </div>
+
+          <div class="col-md">
+            <div
+              class="card card-body"
+              style="background-color: rgba(178, 250, 156, 0.815)"
+            >
+              <h5>Total Ports</h5>
+              <hr />
+              <h1 style="text-align: center; padding: 10px">{{inNum}}</h1>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="row">
+            <div class="container container-fluid">
+              <div class="small-box">
+                <button
+                  type="button"
+                  class="btn btn-outline-primary"
+                  data-mdb-ripple-color="dark"
+                >
+                  {{c.name}}
+                </button>
+                <br />
+              </div>
+              <table class="table table-sm" style="border-style: initial">
+                <tr style="background: cornflowerblue">
+                  <th>Client Name</th>
+                  <th>Location</th>
+                  <th>Peering IP</th>
+                  <th>Bandwidth</th>
+                  <th>Interfaces</th>
+                </tr>
+
+                <tr>
+                  <td>{{c.name}}</td>
+                  <td>{{c.customer_location}}</td>
+                  <td>{{c.peering_IP}}</td>
+                  <td>{{c.customer_Bandwidth}} {{c.customer_unit}}</td>
+                  <!-- <td>{{c.customer_unit}}</td> -->
+                  <td>
+                    {% for i in c.connected_interface.all %} 
+                      {{i}}<br />
+                    {% endfor %}
+                  </td>
+                  <!-- <td><a class="btn btn-sm btn-warning" href="#">Update</a></td>
+                    <td><a class="btn btn-sm btn-danger" href="#">Cancel</a></td> -->
+                </tr>
+                <tr>
+                  <td>{{p.name}}</td>
+                  <td>{{p.customer_location}}</td>
+                  <td>{{p.peering_IP}}</td>
+                  <td>{{p.customer_Bandwidth}}</td>
+                  <td>{{p.customer_unit}}</td>
+                  <td>
+                    {% for i in p.connected_interface.all %} 
+                      {{i}}<br />
+                    {% endfor %}
+                  </td>
+                  <!-- <td><a class="btn btn-sm btn-warning" href="#">Update</a></td>
+                    <td><a class="btn btn-sm btn-danger" href="#">Cancel</a></td> -->
+                </tr>
+              </table>
+              <script>
+                $(document).ready(function () {
+                  var x = document.getElementById("myDIV");
+                  x.style.display = "block";
+                });
+                function myFunction() {
+                  var x = document.getElementById("myDIV");
+                  if (x.style.display === "none") {
+                    x.style.display = "block";
+                  } else {
+                    x.style.display = "none";
+                  }
+                }
+              </script>
+              <!-- <script>
+                $(document).ready(function () {
+                  var x = document.getElementById("power");
+                  x.style.display = "none";
+                });
+                function powerFunc() {
+                  var x = document.getElementById("power");
+                  if (x.style.display === "none") {
+                    x.style.display = "block";
+                  } else {
+                    x.style.display = "none";
+                  }
+                }
+              </script> -->
+              <button
+                class="btn btn-outline-primary"
+                type="submit"
+                onclick="myFunction()"
+              >
+                Interface Graphs
+              </button>
+              <button
+                class="btn btn-outline-primary"
+              >
+              <a href="{% url 'customers' %}"> Back to Customer list</a>
+              </button>
+
+              <table
+                id="myDIV"
+                class="table table-sm container-fluid"
+                style="border-style: initial align-text= center" 
+              >
+                <tr style="background: cornflowerblue">
+                  <th>Interface Name</th>
+                  <th>Description</th>
+                  <th>Graphs</th>
+                  <th>Details</th>
+                </tr>
+                {% for i in c.connected_interface.all %}
+                <tr>
+                  <td>{{i.interface_name}}</td>
+                  <td>{{i.interface_description}}</td>
+                  {% autoescape off %}
+                  <td>{{i.interface_graph}}</td>
+                  {% endautoescape %}
+                  <td>
+                    <form action="#" method="post">
+                      {% csrf_token %}
+                      <input name="dv" type="hidden" value="{{i.device.device_type}}"></input>
+                      <input name="rt" type="hidden" value="{{i.device.device_IP}}"></input>
+                      <button type="submit" class="btn  btn-outline-primary" name="cmd" value="{{i.interface_name}}" onclick="powerFunc()">show Power</button>
+                      <button type="submit" class="btn  btn-outline-danger" name="errors" value="{{i.interface_name}}">show Errors</button>
+                    </form>
+                    <div>
+                      {% if data == i.interface_name %}
+                      <pre>{{ output }}</pre>
+                      {% endif %}
+                      {% if ierror == i.interface_name %}
+                      <pre>{{ ioutput }}</pre>
+                      {% endif %}
+                    </div>
+                  </td>
+                </tr>
+                {% endfor %}
+                {% for i in p.connected_interface.all %}
+                <tr>
+                  <td>{{i.interface_name}}</td>
+                  <td>{{i.interface_description}}</td>
+                  {% autoescape off %}
+                  <td>{{i.interface_graph}}</td>
+                  {% endautoescape %}
+                  <td>
+                    <form action="#" method="post">
+                      {% csrf_token %}
+                      <input name="dv" type="hidden" value="{{i.device.device_type}}"></input>
+                      <input name="rt" type="hidden" value="{{i.device.device_IP}}"></input>
+                      <button type="submit" class="btn btn-primary" name="cmd" value="{{i.interface_name}}" >show Interface power</button>
+                      <button type="submit" class="btn btn-primary" name="errors" value="{{i.interface_name}}">show Interface Errors</button>
+                    </form>
+                    <div >
+                      {% if data == i.interface_name %}
+                      <pre>{{ output }}</pre>
+                      {% endif %}
+                      {% if ierror == i.interface_name %}
+                      <pre>{{ ioutput }}</pre>
+                      {% endif %}
+                    </div>
+                  </td>
+                </tr>
+                {% endfor %}
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- /.Left col -->
+    <!-- right col (We are only adding the ID to make the widgets sortable)-->
+
+    <!-- right col -->
+  </div>
+  <!-- /.row (main row) -->
+</section>
+
+{% endblock %}

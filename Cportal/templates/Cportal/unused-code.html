@@ -1,0 +1,11 @@
+d = CustomerProperties.objects.filter(name__username=request.user)
+    if len(d)>1:
+        c = d[0]
+        p = d[1]
+        interface_number = c.connected_interface.count()+p.connected_interface.count()
+        location = c.customer_location.location_name
+    else:
+        c = CustomerProperties.objects.get(name__username=request.user)
+        p = ""
+        interface_number = c.connected_interface.count()
+        location = c.customer_location.location_name

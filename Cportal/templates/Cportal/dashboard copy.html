@@ -1,0 +1,197 @@
+{% extends 'Cportal/main.html' %} {% block content %}
+<section class="content">
+  <hr />
+  {% include 'Cportal/status.html' %}
+  <!-- Content Header (Page header) -->
+  <!-- <div class="content-header">
+          <div class="container-fluid">
+            <div class="row mb-2">
+              <div class="col-sm-6">
+                <h1 class="m-0 text-dark"> Dashboard</h1>
+              </div><!-- /.col -->
+  <!-- <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                  <li class="breadcrumb-item"><a href="#">Home</a></li>
+                  <li class="breadcrumb-item active">Dashboard v1</li>
+                </ol>
+              </div> -->
+  <!-- /.col -->
+  <!-- </div>
+            <!-- /.row --
+          </div>
+          <!-- /.container-fluid --
+        </div>  -->
+  <!-- /.content-header -->
+
+  <!-- Main content -->
+
+  <!-- Main row -->
+  <div class="row">
+    <section class="col-lg-8 connectedSortable">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">
+            <i class="fas fa-chart-pie mr-1"></i>
+            Customer properties
+          </h3>
+        </div>
+        <!-- <div class="card-footer">
+                    <form action="/search/" method="post">
+                      {% csrf_token %}
+                      <div class="input-group">
+                        <input class="form-control form-control-lg" type="text" name="cmd" placeholder="Input here ..." class="form-control">
+                        <span class="input-group-append">
+                          <button type="submit"  class="btn btn-primary">Send</button>
+                        </span>
+                      </div>
+                      {% if output %}
+                        <!-- {{ output|linebreaks }} -->
+        <!-- <pre>{{ output }}</pre>
+                      {% endif %}
+                      {% if exit_code %}
+                        <h3>Your command returned an error: {{ error_msg }}</h3>
+                      {% endif %}
+                    </form>
+                    
+                  </div>  
+                </div>-->
+
+        <div class="card card-body">
+          <a
+            class="btn btn-primary btn-sm btn-block"
+            href="{% url 'customerinfo' %}"
+            >Add customer properties</a
+          >
+          <table class="table table-sm">
+            <tr>
+              <th>Customer Name</th>
+              <th>Location</th>
+              <th>Connected device</th>
+              <th>Bandwidth</th>
+              <th>Type</th>
+              <th>Update</th>
+              <th>Remove</th>
+            </tr>
+            {% for cp in custpro %}
+            <tr>
+              <td>{{cp.name}}</td>
+              <td>{{cp.customer_location}}</td>
+              <td>{{cp.connected_interface.interface_name}}</td>
+              <td>{{cp.customer_Bandwidth}}</td>
+              <td>{{cp.customer_unit}}</td>
+              <td><a class="btn btn-sm btn-warning" href="#">Update</a></td>
+              <td><a class="btn btn-sm btn-danger" href="#">Cancel</a></td>
+            </tr>
+            {% endfor %}
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">
+            <i class="fas fa-chart-pie mr-1"></i>
+            List of Customers:
+          </h3>
+        </div>
+        <div>
+          <ul class="list-group">
+            {%for u in user %}
+            <li class="list-group-item">
+              <!-- <a href="#" class="nav-link"> -->
+              <i class="nav-icon fas fa-copy"></i>
+              {{u.customer_name}}
+              <!-- </a> -->
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <div class="card-footer"></div>
+      </div>
+    </section>
+    <!-- /.Left col -->
+    <!-- right col (We are only adding the ID to make the widgets sortable)-->
+    <section class="col-lg-4 connectedSortable">
+      <!-- Map card -->
+      <div class="card bg-gradient-primary">
+        <div class="card-header border-0">
+          <h3
+            class="card-title"
+            style="font-style: normal; text-align: justify"
+          >
+            <i class="far fas fa-tachometer-alt"></i>
+            Clock
+          </h3>
+        </div>
+        <div class="card-body pt-0">
+          <div id="clock">8:10:45</div>
+        </div>
+      </div>
+      <!-- /.card -->
+
+      <!-- Calendar -->
+
+      <div class="card bg-gradient-success">
+        <div class="card-header border-0">
+          <h3 class="card-title">
+            <i class="far fa-calendar-alt"></i>
+            Calendar
+          </h3>
+          <!-- tools card -->
+          <div class="card-tools">
+            <!-- button with a dropdown -->
+            <div class="btn-group">
+              <button
+                type="button"
+                class="btn btn-success btn-sm dropdown-toggle"
+                data-toggle="dropdown"
+                data-offset="-52"
+              >
+                <i class="fas fa-bars"></i>
+              </button>
+              <div class="dropdown-menu" role="menu">
+                <a href="#" class="dropdown-item">Add new event</a>
+                <a href="#" class="dropdown-item">Clear events</a>
+                <div class="dropdown-divider"></div>
+                <a href="#" class="dropdown-item">View calendar</a>
+              </div>
+            </div>
+            <button
+              type="button"
+              class="btn btn-success btn-sm"
+              data-card-widget="collapse"
+            >
+              <i class="fas fa-minus"></i>
+            </button>
+            <button
+              type="button"
+              class="btn btn-success btn-sm"
+              data-card-widget="remove"
+            >
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <!-- /. tools -->
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body pt-0">
+          <!--The calendar -->
+          <!-- <iframe src="http://103.16.152.8:3000/d-solo/3In6qUMmz/device_health_check_demo?orgId=1&from=1605685331324&to=1605771731324&var-Node=BSCCL-COX-CORE-01&panelId=2" width="450" height="200" frameborder="0"></iframe> -->
+          <div id="calendar" style="width: 100%"></div>
+        </div>
+        <!-- /.card-body -->
+      </div>
+      <!-- /.card -->
+      <!-- <iframe src="http://192.168.200.230:3000/d-solo/3In6qUMmz/device_health_check_demo?orgId=1&from=1610032923765&to=1610119323765&var-Node=BSCCL-DHK-AGG-01&panelId=69" width="450" height="200" frameborder="0"></iframe> -->
+      <!-- <iframe src="http://103.16.152.8:3000/d-solo/3In6qUMmz/device_health_check_demo?orgId=1&var-Node=BSCCL-DHK-CORE-01&from=1609574623654&to=1609661023654&panelId=69&output=embed" width="450" height="200" frameborder="0"></iframe> -->
+      <!-- <iframe src="http://103.16.152.8:3000/d-solo/3In6qUMmz/device_health_check_demo?var-Node=BSCCL-DHK-CORE-01&from=1610281776421&to=1610368176421&orgId=1&panelId=69" width="450" height="200" frameborder="0"></iframe> -->
+    </section>
+    <!-- right col -->
+  </div>
+  <!-- /.row (main row) -->
+</section>
+
+<!-- /.container-fluid -->
+
+{% endblock %}

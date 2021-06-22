@@ -1,0 +1,89 @@
+{% extends 'Cportal/main-customer.html' %} 
+{% load static %} 
+{% block content %}
+<section class="content">
+    <hr />
+  
+    <!-- Main row -->
+    <div class="row">
+      <section class="container-fluid connectedSortable">
+        <div class="container-fluid">
+          <br />
+          {% include 'Cportal/Customer/c-status.html' %} 
+          <div class="row">
+
+<div class="container container-fluid">
+  <table
+    id="myDIV"
+    class="table table-sm container-fluid col-lg-12 col-md-12 col-sm-12"
+    style="border-style: initial align-text= center" 
+  >
+    <tr style="background: cornflowerblue">
+      <th>Interface Name</th>
+      <th style="text-align: center;">Description</th>
+      <th style="text-align: center;">Graphs</th>
+      <th style="text-align: center;">Details</th>
+    </tr>
+    {% for c in d %}
+      {% for i in c.connected_interface.all %}
+      <tr>
+        <td>{{i.interface_name}}</td>
+        <td>{{i.interface_description}}</td>
+        {% autoescape off %}
+        <td>{{i.interface_graph}}</td>
+        {% endautoescape %}
+        <td>
+          <form action="#" method="post">
+            {% csrf_token %}
+            <input name="dv" type="hidden" value="{{i.device.device_type}}"></input>
+            <input name="rt" type="hidden" value="{{i.device.device_IP}}"></input>
+            <div class="btn-group" role="group" aria-label="Basic example">
+              <button type="submit" class="btn btn-danger" name="cmd" value="{{i.interface_name}}" style="color: lawngreen;">show power</button>
+              <button type="submit" class="btn btn-primary" name="errors" value="{{i.interface_name}}">show Errors</button>
+            </div>
+          </form>
+          <div>
+            {% if data == i.interface_name %}
+            <pre>{{ output }}</pre>
+            {% endif %}
+            {% if ierror == i.interface_name %}
+            <pre>{{ ioutput }}</pre>
+            {% endif %}
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    {% endfor %}
+    {% for i in p.connected_interface.all %}
+    <tr>
+      <td>{{i.interface_name}}</td>
+      <td>{{i.interface_description}}</td>
+      {% autoescape off %}
+      <td>{{i.interface_graph}}</td>
+      {% endautoescape %}
+      <td>
+        <form action="#" method="post">
+          {% csrf_token %}
+          <input name="dv" type="hidden" value="{{i.device.device_type}}"></input>
+          <input name="rt" type="hidden" value="{{i.device.device_IP}}"></input>
+          <button type="submit" class="btn btn-primary" name="cmd" value="{{i.interface_name}}" >show Interface power</button>
+          <button type="submit" class="btn btn-primary" name="errors" value="{{i.interface_name}}">show Interface Errors</button>
+        </form>
+        <div >
+          {% if data == i.interface_name %}
+          <pre>{{ output }}</pre>
+          {% endif %}
+          {% if ierror == i.interface_name %}
+          <pre>{{ ioutput }}</pre>
+          {% endif %}
+        </div>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+</div>
+</div>
+</div>
+</section>
+{% endblock %}

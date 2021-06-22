@@ -1,0 +1,119 @@
+{% extends 'Cportal/main.html' %} 
+{% load static %} 
+{% block content %}
+
+<section class="content">
+  <hr />
+  
+  <!-- Main row -->
+  <div class="row">
+    <section class="col-lg-8 connectedSortable">
+      
+      {% include 'Cportal/small-boxs.html' %}
+      <div class="container-fluid">
+        <!-- Small boxes (Stat box) -->
+        <div>
+          <div class="row">
+            <div class="container container-fluid">
+              <table class="table table-sm">
+                <tr style="background: cornflowerblue;">
+                  <th>Device Name</th>
+                  <th>Device Type</th>
+                  <th>Device Location</th>
+                  <th>Device Mgmt IP</th>
+                </tr>
+              {% for device in devices %}
+                <tr>
+                  <td><a href='#'>{{device.device_name}}</a></td>
+                  <td>{{device.device_type}}</td>
+                  <td>{{device.device_location}}</td>
+                  <td>{{device.device_IP}}</td>
+                  <!-- <td>{{cp.connected_interface.interface_name}}</td> -->
+                                  <!-- <td><a class="btn btn-sm btn-warning" href="#">Update</a></td>
+                                  <td><a class="btn btn-sm btn-danger" href="#">Cancel</a></td> -->
+                </tr>
+              {% endfor %}
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- /.Left col -->
+    <!-- right col (We are only adding the ID to make the widgets sortable)-->
+    <section class="col-lg-4 connectedSortable">
+      <!-- Map card -->
+      <div class="card bg-gradient-primary">
+        <div class="card-header border-0">
+          <h3
+            class="card-title"
+            style="font-style: normal; text-align: justify"
+          >
+            <i class="far fas fa-tachometer-alt"></i>
+            Clock
+          </h3>
+        </div>
+        <div class="card-body pt-0">
+          <div id="clock">8:10:45</div>
+        </div>
+      </div>
+      <!-- /.card -->
+
+      <!-- Calendar -->
+
+      <div class="card bg-gradient-success">
+        <div class="card-header border-0">
+          <h3 class="card-title">
+            <i class="far fa-calendar-alt"></i>
+            Calendar
+          </h3>
+          <!-- tools card -->
+          <div class="card-tools">
+            <!-- button with a dropdown -->
+            <div class="btn-group">
+              <button
+                type="button"
+                class="btn btn-success btn-sm dropdown-toggle"
+                data-toggle="dropdown"
+                data-offset="-52"
+              >
+                <i class="fas fa-bars"></i>
+              </button>
+              <div class="dropdown-menu" role="menu">
+                <a href="#" class="dropdown-item">Add new event</a>
+                <a href="#" class="dropdown-item">Clear events</a>
+                <div class="dropdown-divider"></div>
+                <a href="#" class="dropdown-item">View calendar</a>
+              </div>
+            </div>
+            <button
+              type="button"
+              class="btn btn-success btn-sm"
+              data-card-widget="collapse"
+            >
+              <i class="fas fa-minus"></i>
+            </button>
+            <button
+              type="button"
+              class="btn btn-success btn-sm"
+              data-card-widget="remove"
+            >
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <!-- /. tools -->
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body pt-0">
+          <!--The calendar -->
+          <div id="calendar" style="width: 100%"></div>
+        </div>
+        <!-- /.card-body -->
+        
+      </div>
+    </section>
+    <!-- right col -->
+  </div>
+  <!-- /.row (main row) -->
+</section>
+{% endblock %}

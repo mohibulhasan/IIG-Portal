@@ -1,0 +1,156 @@
+{% extends 'Cportal/main.html' %} 
+{% load static %} 
+{% load widget_tweaks %} 
+{% block content %}
+<!-- Content Header (Page header) -->
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <!-- <h1 class="m-0 text-dark">Dashboard</h1> -->
+      </div>
+    </div>
+    <!-- /.row -->
+  </div>
+  <!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+<!-- Main row -->
+<div class="row">
+  <section class="col-lg-7 connectedSortable">
+    <div class="card">
+      <div class="card-header bg-info">
+        <h3 class="card-title">
+          <i class="fas fa-copy mr-1"></i>
+          Add Information
+        </h3>
+      </div>
+      <div class="card-footer">
+        <form role="form" method="post" novalidate id="form">
+          {% csrf_token %} 
+					{% for hidden_field in form.hidden_fields %} 
+						{{hidden_field }} 
+					{% endfor %} 
+					{% if form.non_field_errors %}
+						<div class="alert alert-danger" role="alert">
+							{% for error in form.non_field_errors %} 
+								{{ error }} 
+							{% endfor %}
+						</div>
+          {% endif %} 
+					{% for field in form.visible_fields %}
+						<div class="form-group">
+							{{ field.label_tag }} 
+							{% if form.is_bound %} 
+								{% if field.errors %}
+									{% render_field field class="form-control is-invalid" %} 
+									{% for error in field.errors %}
+										<div class="invalid-feedback">{{ error }}</div>
+									{% endfor %} 
+								{% else %} 
+									{% render_field field class="form-control	is-valid" %} 
+								{% endif %} 
+							{% else %} 
+								{% render_field field class="form-control" %} 
+							{% endif %} 
+							{% if field.help_text %}
+								<small class="form-text text-muted">{{ field.help_text }}</small>
+							{% endif %}
+						</div>
+          {% endfor %} 
+					{% if messages %} 
+						{% for message in messages %} 
+							{% if message.tags == 'success' %}
+          			<script type=text/javascript>toastr.{{ message.tags }}('{{ message }}')</script>
+          		{% elif message.tags == 'info' %}
+                <script type=text/javascript>toastr.{{ message.tags }}('{{ message }}')</script>
+              {% elif message.tags == 'warning' %}
+                <script type=text/javascript>toastr.{{ message.tags }}('{{ message }}')</script>
+              {% elif message.tags == 'error' %}
+								<script type=text/javascript>toastr.{{ message.tags }}('{{ message }}')</script>
+          		{% endif %} 
+						{% endfor %} 
+					{% endif %}
+          <!-- {% if messages %}
+                                {% for message in messages %}
+                                    <div class="alert alert-{{ message.tags }} m-2" id="msg" role="alert">
+                                        {{ message }}
+                                        <script>
+                                            alert('{{message}}');
+                                        </script>
+                                    </div>
+                                {% endfor %}
+                            {% endif %} -->
+          <button type="submit" class="btn btn-primary float-right">
+            Submit
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+  <!-- /.Left col -->
+  <!-- right col (We are only adding the ID to make the widgets sortable)-->
+  <section class="col-lg-5 connectedSortable">
+    <!-- <div class="card bg-gradient-primary">
+      <div class="card-header border-0">
+        <h3 class="card-title" style="font-style: normal; text-align: justify">
+          <i class="far fas fa-tachometer-alt"></i>
+          Clock
+        </h3>
+      </div>
+      <div class="card-body pt-0">
+        <div id="clock">8:10:45</div>
+      </div>
+    </div> -->
+    <!-- Map card -->
+    <div class="card">
+      <div class="card-header bg-success">
+        <h3 class="card-title">Existing Information</h3>
+      </div>
+      <!-- /.card-body-->
+      <div class="card-footer">
+        <!-- <a class="btn btn-success btn-sm btn-block" href="{% url 'interfaceinfo' %}">Information</a> -->
+        <table class="table table-sm">
+          <!-- <tr>
+                                <th>Customer Name</th>
+                                <th>Location</th>
+                                <th>Connected device</th>
+                                <th>Bandwidth</th>
+                                <th>Type</th>
+                                <th>Update</th>
+                                <th>Remove</th>
+                                </tr> -->
+          {% for cp in custpro %}
+          <tr>
+            <td>{{cp}}</td>
+            <!-- <td>{{cp.customer_location}}</td>
+                                    <td>{{cp.connected_device}}</td>
+                                    <td>{{cp.customer_Bandwidth}}</td>
+                                    <td>{{cp.customer_unit}}</td> -->
+
+            <!-- <td><a class="btn btn-sm btn-warning" href="request.build_absolute_uri(reverse('view_name', args=(cp.id, )))">Update</a></td> -->
+            <td>
+              <a class="btn btn-sm btn-warning" href="{% url ur cp.id %}"
+                >Update</a
+              >
+            </td>
+            <td>
+              <a class="btn btn-sm btn-danger" href="{% url dl cp.id %}"
+                >Delete</a
+              >
+            </td>
+          </tr>
+          {% endfor %}
+        </table>
+      </div>
+      <!-- /. tools -->
+    </div>
+    <!-- /.card-body -->
+  </section>
+  <!-- right col -->
+</div>
+{% endblock %}
+<!-- /.row (main row) -->
+
+<!-- /.container-fluid -->
+

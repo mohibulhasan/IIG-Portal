@@ -1,0 +1,73 @@
+{%  extends 'Cportal/main-customer.html' %}
+
+{% block content %}
+
+<div class="container-fluid">
+	
+	<br />
+	{% include 'Cportal/Customer/c-status.html' %} 
+	<div class="container bg-danger" style="text-align: center;">
+		<p class="control-sidebar-dark">Your IP <i class="fas fa-arrow-circle-right"></i> {{ip}} </p>
+	</div>
+	<br />
+            <div class="container">
+            	<script src="http://stat.ripe.net/widgets/widget_api.js"></script>
+				<!-- <script src="https://netox.apnic.net/search/widgets/widget_api.js"></script> -->
+				<div class="statwdgtauto">
+					<script>
+						ripestat.init("whois",{"resource":"{{ip}}"},null,{
+							// "disable":["feedback","maximize","controls"]
+							size: "fit",
+                            disable: ["data", "embed-code", "logo","feedback","maximize","permalink"],
+                            show_controls: "yes",
+                            resource_input_text: "Please problematic prefix here",
+						})
+					</script>
+				</div>
+
+				<div class="statwdgtauto">
+                    <script>
+                        ripestat.init("geoloc", {}, null, {
+                            size: "fit",
+                            disable: ["data", "embed-code", "logo", "feedback","maximize","permalink"],
+                            show_controls: "yes",
+                            resource_input_text: "Please enter new resource",
+                        })
+                    </script>
+				</div>
+				<!-- <div class="statwdgtauto">
+					<script>
+						ripestat.init("looking-glass",{},null,{
+							"show_controls":"yes",
+							"size": "fit",
+							// title: "BGP Looking Glass",
+							"disable":["data", "embed-code", "logo", "feedback","maximize","permalink"],
+							resource_input_text: "Please enter IP here",
+						})
+					</script>
+				</div>
+                <div class="statwdgtauto">
+                    <script>
+                        ripestat.init("bgplay", {}, null, {
+                            size: "fit",
+                            disable: ["data", "embed-code", "logo", "feedback","maximize","permalink"],
+                            show_controls: "yes",
+                            resource_input_text: "Please enter new resource",
+                        })
+                    </script>
+				</div>
+				<div class="statwdgtauto">
+                    <script>
+                        ripestat.init("geoloc", {}, null, {
+                            size: "fit",
+                            disable: ["data", "embed-code", "logo", "feedback","maximize","permalink"],
+                            show_controls: "yes",
+                            resource_input_text: "Please enter new resource",
+                        })
+                    </script>
+				</div> -->
+            </div>
+		</div>
+	
+
+{% endblock %}
