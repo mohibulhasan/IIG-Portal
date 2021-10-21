@@ -20,11 +20,13 @@ from .decorators import unauthenticated_user, allowed_users, admin_only
 def alertapi_view(request):
     #print(request.body)
     alert_data = request.body
-    json_alert = alert_data.decode('utf8').replace("'","\"")
-    print(type(json_alert))
-    jsondata = json.loads(json_alert)
+    #json_alert = alert_data.decode('utf8').replace("'","\"")
+    #print(type(json_alert))
+    print(type(alert_data))
+    jsondata = json.loads(alert_data)
     print(type(jsondata))
-    print(jsondata['message'])
+    #print(jsondata['message'])
+    print(jsondata)
     return HttpResponse('Hello, world. This is the webhook response.')
 
 def registerPage(request):
@@ -309,7 +311,7 @@ def userPage(request):
         c = CustomerProperties.objects.get(name__username=request.user)
         p = ""
         interface_number = c.connected_interface.count()
-        location = c.customer_location.location_name    
+        location = c.customer_location.location_name
 
     context = {
         'customer': customer,
@@ -1634,7 +1636,7 @@ def access_sw_CTG_view(request):
     
     ciscoSW = {
         'device_type': 'cisco_ios_telnet',
-        'ip': '192.168.200.14',
+        'ip': '192.168.200.15',
         'username': '',
         'password': 'cisco',
         'secret': 'bs((1SW@ctg@gr@bad',
@@ -1671,3 +1673,169 @@ def access_sw_CTG_view(request):
         'cmd': cmd}
 
     return render(request, 'Cportal/Switch/BSCCL-CTG-SW-01.html', context)
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
+def access_sw_CTG_view_02(request):
+    customer = CustomerInfo.objects.all()
+    devices = DeviceInfo.objects.all()
+    interface = InterfaceInfo.objects.all()
+    customerproperties = CustomerProperties.objects.all()
+    
+    ciscoSW = {
+        'device_type': 'cisco_ios',
+        'ip': '192.168.200.26',
+        'username': 'admin',
+        'password': 'Bsccl@Netw0rk',
+        }
+
+    cmd=''
+    output=''
+    #net_connect.find_prompt()
+    if request.method == "POST":
+        net_connect = ConnectHandler(**ciscoSW)
+        if 'showint' in request.POST:
+            output = net_connect.send_command_timing(
+                command_string="sh int des", 
+                strip_prompt=False,
+                strip_command=False
+            )
+        elif 'intstatus' in request.POST:
+            output = net_connect.send_command_timing(
+                command_string="sh int status", 
+                strip_prompt=False,
+                strip_command=False
+            )
+        elif 'showvlan' in request.POST:
+            output = net_connect.send_command_timing(
+                command_string="sh vlan", 
+                strip_prompt=False,
+                strip_command=False
+                )
+        elif 'showlog' in request.POST:
+            output = net_connect.send_command_timing(
+                command_string="sh logging", 
+                strip_prompt=False,
+                strip_command=False
+                )
+        elif 'cmd' in request.POST:
+            cd = request.POST.get("cmd", None)
+            cmd = net_connect.send_command_timing(
+                command_string=str(cd), 
+                strip_prompt=False,
+                strip_command=False
+                )
+        else:
+            output = "Click Buttons you need"
+        net_connect.disconnect()
+
+    # if request.method == "POST":
+    # 	cd = request.POST.get("cmd", None)
+    # 	cmd = net_connect.send_command(cd)
+
+    context = {'user': customer,
+        'devices': devices,
+        'custpro': customerproperties,
+        'output': output,
+        'cmd': cmd}
+
+    return render(request, 'Cportal/Switch/BSCCL-CTG-SW-02.html', context)
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
+def EQ_RT_01_view(request):
+    customer = CustomerInfo.objects.all()
+    devices = DeviceInfo.objects.all()
+    interface = InterfaceInfo.objects.all()
+    customerproperties = CustomerProperties.objects.all()
+    
+    ciscoasr = {
+        'device_type': 'cisco_xr',
+        'ip': '192.168.203.1',
+        'username': 'noc',
+        'password': 'noc@bsccl',
+        }
+
+    cmd=''
+    output=''
+    #net_connect.find_prompt()
+    if request.method == "POST":
+        net_connect = ConnectHandler(**ciscoasr)
+        if 'showint' in request.POST:
+            output = net_connect.send_command("sh int des")
+        elif 'showroute' in request.POST:
+            output = net_connect.send_command("sh route vrf all summary")
+        elif 'showbgp' in request.POST:
+            output = net_connect.send_command("sh bgp vrf network summary")
+        elif 'showpolicy' in request.POST:
+            output = net_connect.send_command("sh run policy-map ?")
+        elif 'showlog' in request.POST:
+            output = net_connect.send_command("sh logging last 20")
+        elif 'cmd' in request.POST:
+            cd = request.POST.get("cmd", None)
+            cmd = net_connect.send_command(cd)
+        else:
+            output = "Click Buttons you need"
+        net_connect.disconnect()
+
+    # if request.method == "POST":
+    # 	cd = request.POST.get("cmd", None)
+    # 	cmd = net_connect.send_command(cd)
+
+    context = {'user': customer,
+        'devices': devices,
+        'custpro': customerproperties,
+        'output': output,
+        'cmd': cmd}
+
+    return render(request, 'Cportal/Router/BSCCL-EQ-RTR-01.html', context)
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['Admin'])
+def EQ_RT_02_view(request):
+    customer = CustomerInfo.objects.all()
+    devices = DeviceInfo.objects.all()
+    interface = InterfaceInfo.objects.all()
+    customerproperties = CustomerProperties.objects.all()
+    
+    ciscoasr = {
+        'device_type': 'cisco_xr',
+        'ip': '192.168.203.3',
+        'username': 'noc',
+        'password': 'noc@bsccl',
+        }
+
+    cmd=''
+    output=''
+    #net_connect.find_prompt()
+    if request.method == "POST":
+        net_connect = ConnectHandler(**ciscoasr)
+        if 'showint' in request.POST:
+            output = net_connect.send_command("sh int des")
+        elif 'showroute' in request.POST:
+            output = net_connect.send_command("sh route vrf all summary")
+        elif 'showbgp' in request.POST:
+            output = net_connect.send_command("sh bgp vrf network summary")
+        elif 'showpolicy' in request.POST:
+            output = net_connect.send_command("sh run policy-map ?")
+        elif 'showlog' in request.POST:
+            output = net_connect.send_command("sh logging last 20")
+        elif 'cmd' in request.POST:
+            cd = request.POST.get("cmd", None)
+            cmd = net_connect.send_command(cd)
+        else:
+            output = "Click Buttons you need"
+        net_connect.disconnect()
+
+    # if request.method == "POST":
+    # 	cd = request.POST.get("cmd", None)
+    # 	cmd = net_connect.send_command(cd)
+
+    context = {'user': customer,
+        'devices': devices,
+        'custpro': customerproperties,
+        'output': output,
+        'cmd': cmd}
+
+    return render(request, 'Cportal/Router/BSCCL-EQ-RTR-02.html', context)

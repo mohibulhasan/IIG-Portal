@@ -1,0 +1,100 @@
+
+{%  extends 'Cportal/main.html' %}
+
+{% block content %}
+
+<h1 style="color: rgb(252, 0, 13); font-family: Arial, Helvetica, sans-serif;">BSCCL CTG POP SWITCH 02</h1>
+<!-- Main row -->
+<div class="row">     
+    <section class="col-lg-7 connectedSortable">
+        <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">
+                <i class="fas fa-chart-bar mr-1"></i>
+                Click Buttons to see output  
+              </h3>
+              
+            </div>
+            <div class="card-footer">
+            <!-- Example Commands from Buttons -->
+                <form action="#" method="post">
+                    {% csrf_token %}
+                    
+                    <button type="submit" class="btn btn-primary" name="showint">Interface Descriptions</button>
+                    <button type="submit" class="btn btn-secondary" name="intstatus">Interface Status</button>
+                    <button type="submit" class="btn btn-success" name="showvlan" >Show Vlans</button>
+                    <!-- <button type="submit" class="btn btn-success" name="showlog" >Last 20 Logs</button> -->
+                    <!-- <button type="button" class="btn btn-danger">Danger</button>
+                    <button type="button" class="btn btn-warning">Warning</button>
+                    <button type="button" class="btn btn-info">Info</button>
+                    <button type="button" class="btn btn-light">Light</button>
+                    <button type="button" class="btn btn-dark">Dark</button> -->
+                    
+                </form>
+                <div>
+                    {% if output %}
+                        <pre>{{ output }}</pre>
+                    {% endif %}
+                </div>
+            </div>  
+        </div>
+        <div class="card">
+            <div class="card-header">
+            <h3 class="card-title">
+                <i class="fas fa-chart-pie mr-1"></i>
+                Execute Your Commands here... 
+            </h3>
+            
+            </div>
+        
+            <div class="card-footer">
+            <form action="#" method="post">
+                {% csrf_token %}
+                <div class="input-group">
+                <input class="form-control form-control-lg" type="text" name="cmd" placeholder="Input here ..." class="form-control">
+                <span class="input-group-append">
+                    <button type="submit"  class="btn btn-primary">Send</button>
+                </span>
+                </div>
+                {% if cmd %}
+                <!-- {{ output|linebreaks }} -->
+                <pre>{{ cmd }}</pre>
+                {% endif %} 
+                
+            </form>
+            </div>
+        </div>
+      
+      
+    </section>
+    <!-- /.Left col -->
+    <!-- right col (We are only adding the ID to make the widgets sortable)-->
+    <section class="col-lg-5 connectedSortable">
+        <div class="card">
+            <div class="card-header bg-success">
+                <h3 class="card-title">Device Information</h3>
+              </div>
+              <!-- /.card-body-->
+              <div class="card-footer">
+                <!-- <a class="btn btn-success btn-sm btn-block" href="{% url 'interfaceinfo' %}">Information</a> -->
+                <table class="table table-sm">
+                  {% for device in devices %}
+                  <tr>
+                    <td>{{device}}</td>
+                    <td>
+                      <a class="btn btn-primary btn-sm btn-block" href="/{{device}}">Access Device</a>
+                      <!-- <a class="btn btn-sm btn-warning" href="/{{device}}">Update</a> -->
+                    </td>
+                    
+                  </tr>
+                  {% endfor %}
+                </table>
+              </div>
+        </div>
+      
+    </section>
+    <!-- right col -->
+</div>
+<!-- /.row (main row) -->
+
+{% endblock %}

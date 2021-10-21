@@ -23,7 +23,7 @@
             {% if customer.profile_pic %}
             <img class="profile-pic" src="{{request.user.customerinfo.profile_pic.url}}" >
             {% else %}
-            <img class="profile-pic" src="{% static 'images/default-logo.png' %}">
+            <img class="profile-pic" src="{% static 'default-logo.png' %}">
             <p style="color: orange; text-align: center;">Please add organization logo at profile pic section.</p>
 			{% endif %}
 			

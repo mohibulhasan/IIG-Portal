@@ -70,7 +70,10 @@ urlpatterns = [
     path('BSCCL-NRB-POP', views.nexus_NRB_view, name='BSCCL-NRB-POP'),
     path('BSCCL-ACCESS-SW-01', views.access_sw_01_view, name='BSCCL-ACCESS-SW-01'),
     path('BSCCL-CTG-SW-01', views.access_sw_CTG_view, name='BSCCL-CTG-SW-01'),
+    path('BSCCL-CTG-SW-02', views.access_sw_CTG_view_02, name='BSCCL-CTG-SW-02'),
     path('BSCCL-COX-NEXUS-01', views.nexus_cox_01_view, name='BSCCL-COX-NEXUS-01'),
+    path('BSCCL-EQ-RTR-01', views.EQ_RT_01_view, name='BSCCL-EQ-RTR-01'),
+    path('BSCCL-EQ-RTR-02', views.EQ_RT_02_view, name='BSCCL-EQ-RTR-02'),
 
     path('customers', views.customer_view, name='customers'),  
     path('clientdetails/<str:pk>', views.clientdetails_view, name='clientdetails'),  
