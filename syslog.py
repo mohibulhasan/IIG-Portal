@@ -63,7 +63,8 @@ while True:
 
     if mtime_cur != mtime_last:
 
-        for i in tail(LOG_FILE, ):
+        for i in tail(LOG_FILE, 5):
+            print(i)
             d.append(i)
             # if WATCH_FOR.lower() in i.lower():
 
@@ -71,7 +72,8 @@ while True:
         
         djson = json.dumps(d)
         requests.post(url = url1, data = djson)
-        print(djson)
+        
+        #print(djson)
 
     mtime_last = mtime_cur
     

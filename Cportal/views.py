@@ -15,19 +15,37 @@ from django.conf import settings
 import json
 from datetime import datetime
 from .decorators import unauthenticated_user, allowed_users, admin_only
+import re
 
 @require_POST
 def alertapi_view(request):
     #print(request.body)
     alert_data = request.body
+    #data = request.body
+    #messages.error(request, 'Invalid header found.')
     #json_alert = alert_data.decode('utf8').replace("'","\"")
     #print(type(json_alert))
-    print(type(alert_data))
+    #print(alert_data)
     jsondata = json.loads(alert_data)
-    print(type(jsondata))
-    #print(jsondata['message'])
-    print(jsondata)
-    return HttpResponse('Hello, world. This is the webhook response.')
+    for i in jsondata:
+        if ("Interface" in i):
+            print(i)
+    ##print(jsondata)
+    #return HttpResponse('Hello, world. This is the webhook response.')
+    return HttpResponse(messages.error(request, 'Invalid header found.'))
+
+    subject = "API alert data from IIG Portal" 
+    body = {
+            #'message':str(alert_data), 
+            'message':str(jsondata), 
+            }
+    message = "\n".join(body.values())
+    fr_email = settings.EMAIL_HOST_USER
+    try:
+        #send_mail(subject, message, fr_email, ['mohibul373@gmail.com']) 
+        messages.success(request, 'send mail successful.')
+    except BadHeaderError:
+        return messages.error(request, 'Invalid header found.')
 
 def registerPage(request):
     form = UserCreationForm()
@@ -54,7 +72,7 @@ def logoutUser(request):
     return redirect('login')
 
 @login_required(login_url='login')
-@allowed_users(allowed_roles=['Customer'])
+#@allowed_users(allowed_roles=['Customer'])
 def contact(request):
 
     def get_ip(request):
@@ -85,7 +103,7 @@ def contact(request):
     if request.method == 'POST':
         form = ContactForm(request.POST)
         if form.is_valid():
-            subject = "Website Inquiry" 
+            subject = "Website Inquiry from Customer" 
             body = {
             'first_name': form.cleaned_data['first_name'], 
             'last_name': form.cleaned_data['last_name'], 
@@ -190,7 +208,7 @@ def home(request):
             ip = request.META.get('REMOTE_ADDR')
         return ip
     ip = get_ip(request)
-    print(ip)
+    #print(ip)
 
     context = {'user': customer,
         'count': user_count,
@@ -224,8 +242,8 @@ def userPage(request):
     if request.method == "POST":
         rt = request.POST.get('rt',"")
         dv = request.POST.get('dv',"")
-        print(dv)
-        print(rt) 
+        #print(dv)
+        #print(rt) 
         if dv=="Router":
             ciscoasr = {
                 'device_type': 'cisco_xr',
@@ -236,7 +254,7 @@ def userPage(request):
                 }
             data = request.POST.get('cmd',"")
             ierror = request.POST.get('errors',"")
-            print(data)
+            #print(data)
             net_connect = ConnectHandler(**ciscoasr)
             output = net_connect.send_command("sh controller "+ data +" phy | i x Power")
             ioutput = net_connect.send_command("sh int "+ ierror +" | i error")
@@ -252,11 +270,11 @@ def userPage(request):
                 }
             data = request.POST.get('cmd',"")
             ierror = request.POST.get('errors',"")
-            print(data)
+            #print(data)
             net_connect = ConnectHandler(**ciscoasr)
             output = net_connect.send_command("sh int "+ data +" transceiver detail | b Optical")
             ioutput = net_connect.send_command("sh int "+ ierror +" | i error")
-            print(output)
+            #print(output)
             net_connect.disconnect()
         elif rt=="192.168.200.15":
             ciscoasr = {
@@ -269,11 +287,11 @@ def userPage(request):
             }
             data = request.POST.get('cmd',"")
             ierror = request.POST.get('errors',"")
-            print(data)
+            #print(data)
             net_connect = ConnectHandler(**ciscoasr)
             output = net_connect.send_command("sh int "+ data +" transceiver detail | b Optical")
             ioutput = net_connect.send_command("sh int "+ ierror +" | i error")
-            print(output)
+            #print(output)
             net_connect.disconnect()
         else:
             ciscoasr = {
@@ -285,11 +303,11 @@ def userPage(request):
                 }
             data = request.POST.get('cmd',"")
             ierror = request.POST.get('errors',"")
-            print(data)
+            #print(data)
             net_connect = ConnectHandler(**ciscoasr)
             output = net_connect.send_command("sh int "+ data +" trans details | i Power")
             ioutput = net_connect.send_command("sh int "+ ierror +" | i error")
-            print(output)
+            #print(output)
             net_connect.disconnect()
     
     def get_ip(request):
@@ -1684,7 +1702,7 @@ def access_sw_CTG_view_02(request):
     
     ciscoSW = {
         'device_type': 'cisco_ios',
-        'ip': '192.168.200.26',
+        'ip': '192.168.200.34',
         'username': 'admin',
         'password': 'Bsccl@Netw0rk',
         }

@@ -26,7 +26,7 @@ SECRET_KEY = '8i5rov0!2egg8a6ieuy9x_bs^wjx^%gjb-ghko*(@#1@#ye7g)'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.200.230', '103.16.152.8', 'monitor.bsccl.com']
+ALLOWED_HOSTS = ['192.168.200.230', '103.16.152.8', 'monitor.bsccl.com', '192.168.200.132']
 
 
 # Application definition
@@ -138,8 +138,8 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'iigportal.bsccl@gmail.com'
-EMAIL_HOST_PASSWORD = 'Bsccl@n0c11G'
-
+EMAIL_HOST_PASSWORD = 'fpciwnjiofvmhxen'
+#Google APP password: fpciwnjiofvmhxen
 # MESSAGE_TAGS = {
 #     messages.INFO: 'alert-info',
 #     messages.ERROR: 'danger',

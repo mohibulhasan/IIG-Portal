@@ -49,7 +49,8 @@ class InterfaceInfo(models.Model):
     device = models.ForeignKey(DeviceInfo, null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
-        return (self.device.device_name + ' - ' + self.interface_name)
+        #return (self.device.device_name + ' - ' + self.interface_name)
+        return (self.device.device_name + ' - ' + self.interface_description + ' - ' + self.interface_name)
 
 class CustomerProperties(models.Model):
     unit = (
@@ -72,6 +73,7 @@ class CustomerProperties(models.Model):
         else:
             pd = ''
         return (self.name.customer_name + ' ' + pd)
+        #return (pd)
 
 class EmailalertDB(models.Model):
     emailDB = models.EmailField(max_length=70, unique=True)
