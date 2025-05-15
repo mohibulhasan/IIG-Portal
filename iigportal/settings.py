@@ -26,7 +26,7 @@ SECRET_KEY = '8i5rov0!2egg8a6ieuy9x_bs^wjx^%gjb-ghko*(@#1@#ye7g)'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.200.230', '103.16.152.8', 'monitor.bsccl.com', '192.168.200.132']
+ALLOWED_HOSTS = ['192.168.200.230', '103.16.152.8', 'monitor.bsccl.com', '192.168.200.132','https://mohibulhasan.github.io/IIG-Portal/']
 
 
 # Application definition
