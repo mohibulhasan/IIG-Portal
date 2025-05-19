@@ -138,7 +138,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'iigportal.bsccl@gmail.com'
-EMAIL_HOST_PASSWORD = 'fpciwnjiofvmhxen'
+EMAIL_HOST_PASSWORD = 'fpciwnjiofvmhxen' #changing password
 #Google APP password: fpciwnjiofvmhxen
 # MESSAGE_TAGS = {
 #     messages.INFO: 'alert-info',
